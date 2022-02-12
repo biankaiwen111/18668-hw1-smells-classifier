@@ -8,8 +8,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.model_selection import train_test_split, GridSearchCV
 
-class DecisionTree:
 
+class DecisionTree:
     model_type = "decision_tree"
 
     def __init__(self, filename):
@@ -22,21 +22,22 @@ class DecisionTree:
 
     def clean_data(self):
         df = pd.DataFrame(self.loaded_data_file[0])
-        Y_data = df.iloc[:, -1].values
+        y_data = df.iloc[:, -1].values
 
         encoder = preprocessing.LabelEncoder()
-        y = encoder.fit_transform(Y_data)
-        X_copy = df.iloc[:, :-1].copy()
+        y = encoder.fit_transform(y_data)
+        x_copy = df.iloc[:, :-1].copy()
         imputer = SimpleImputer(strategy="median")
-        imputer.fit(X_copy)
-        new_X = imputer.transform(X_copy)
+        imputer.fit(x_copy)
+        new_x = imputer.transform(x_copy)
 
-        ## features selection
+        # features selection
         sel = VarianceThreshold(1)
-        sel.fit(new_X)
-        selected_new_X = sel.transform(new_X)
+        sel.fit(new_x)
+        selected_new_x = sel.transform(new_x)
 
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(selected_new_X, y, test_size=0.15, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(selected_new_x, y, test_size=0.15,
+                                                                                random_state=42)
 
     def save_data_set(self):
         smell_name = self.filename.split('.')[0].replace('-', '_')
@@ -45,7 +46,6 @@ class DecisionTree:
 
         with open(f"./test_data/{self.model_type}/decision_tree_{smell_name}_test_data.pkl", "wb") as file2:
             pickle.dump([self.X_test, self.y_test], file2)
-
 
     def train_model(self):
         depths = np.arange(10, 50)
@@ -62,6 +62,3 @@ class DecisionTree:
         smell_name = self.filename.split('.')[0].replace('-', '_')
 
         pickle.dump(best_model, open(f'./trained_models/{self.model_type}/{smell_name}_decision_tree.sav', 'wb'))
-
-
-
