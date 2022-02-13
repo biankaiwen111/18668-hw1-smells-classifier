@@ -146,8 +146,6 @@ if __name__ == "__main__":
             else:
                 print("Unknown command, please try again!")
                 print("Enter <help> for usage menu")
-
-            print("your command is: ", split_command)
         except Exception as error:
             print(f"Error: {error}")
             break

@@ -3,6 +3,8 @@ from models.random_forest import RandomForest
 import os
 import shutil
 
+from models.svc_rbf import SVCrbf
+
 
 def ini_folder_structure():
     model_types = os.listdir('models')
@@ -38,6 +40,11 @@ def train_models():
         random_forest.clean_data()
         random_forest.save_data_set()
         random_forest.train_model()
+
+        svc_rbf = SVCrbf(data_set)
+        svc_rbf.clean_data()
+        svc_rbf.save_data_set()
+        svc_rbf.train_model()
 
 
 if __name__ == '__main__':
