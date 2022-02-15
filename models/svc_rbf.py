@@ -4,7 +4,7 @@ from scipy.io import arff
 from sklearn import preprocessing
 from sklearn.impute import SimpleImputer
 from sklearn.feature_selection import VarianceThreshold
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 from sklearn.svm import SVC
 
 
@@ -47,13 +47,14 @@ class SVCrbf:
             pickle.dump([self.X_test, self.y_test], file2)
 
     def train_model(self):
-        c = [0.001, 0.1, 1, 10, 100, 100]
+        c = [200, 250, 280, 310, 500, 820, 850, 900, 950, 1000]
         gammas = [1e-6, 1e-7, 1e-8, 1e-9, 1e-10, 1e-11]
         param_grid = {'C': c, 'kernel': ['rbf'], 'gamma': gammas}
 
         svc = SVC()
         print(f"Start grid searching for svc(rbf kernel) model with data set: {self.filename}...")
-        grid_search = GridSearchCV(svc, param_grid, cv=10, scoring="f1", return_train_score=True)
+        k_fold = StratifiedKFold(n_splits=10)
+        grid_search = GridSearchCV(svc, param_grid, cv=k_fold, scoring="f1", return_train_score=True)
 
         grid_search.fit(self.X_train, self.y_train)
         print(f"Finish training svc(rbf kernel) model with data set: {self.filename}\n")

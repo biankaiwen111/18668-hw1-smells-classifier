@@ -18,7 +18,7 @@ def run(args):
         return
     model_name = args[0]
     if model_name not in all_models:
-        print(f"Model {model_name} does not exist. Enter <help> for usage menu")
+        print(f"Model {model_name} does not exist. Enter <list-models> to list all available models")
         return
 
     required_smells = args[1:]
@@ -27,7 +27,7 @@ def run(args):
         return
     for required_smell in required_smells:
         if required_smell not in all_smells:
-            print(f"Unknown smell: {required_smell}. Enter <help> for usage menu")
+            print(f"Unknown smell: {required_smell}. Enter <list-smells> to list all available smells")
             return
     run_test_set_result(model_name, required_smells)
 
@@ -72,6 +72,10 @@ def list_smells():
 def compare(args):
     if len(args) > 2:
         print("You can compare only one model or smell per time. Enter <help> for usage menu")
+        return
+    if len(args) != 2:
+        print("Please specify the model or smell. Enter <help> for usage menu")
+        return
     all_models_files = list(filter(lambda filename: filename.endswith(".py"), os.listdir('models')))
     all_models = list(map(lambda filename: filename.split('.')[0], all_models_files))
 
@@ -80,12 +84,12 @@ def compare(args):
 
     model_name = args[0]
     if model_name not in all_models:
-        print(f"Model {model_name} does not exist. Enter <help> for usage menu")
+        print(f"Model {model_name} does not exist. Enter <list-models> to list all available models")
         return
 
     required_smell = args[1]
     if required_smell not in all_smells:
-        print(f"Unknown smell: {required_smell}. Enter <help> for usage menu")
+        print(f"Unknown smell: {required_smell}. Enter <list-smells> to list all available smells")
         return
     compare_test_and_training(model_name, required_smell)
 

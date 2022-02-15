@@ -6,7 +6,7 @@ from sklearn import preprocessing
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.feature_selection import VarianceThreshold
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 
 
 class DecisionTree:
@@ -53,7 +53,8 @@ class DecisionTree:
         param_grid = {'criterion': ['gini', 'entropy'], 'max_depth': depths, 'min_samples_leaf': num_leafs}
         new_tree_clf = DecisionTreeClassifier()
         print(f"Start grid searching for decision tree model with data set: {self.filename}...")
-        grid_search = GridSearchCV(new_tree_clf, param_grid, cv=10, scoring="f1", return_train_score=True)
+        k_fold = StratifiedKFold(n_splits=10)
+        grid_search = GridSearchCV(new_tree_clf, param_grid, cv=k_fold, scoring="f1", return_train_score=True)
 
         grid_search.fit(self.X_train, self.y_train)
         print(f"Finish training decision tree model with data set: {self.filename}\n")
