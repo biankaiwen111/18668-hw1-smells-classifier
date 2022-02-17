@@ -12,7 +12,6 @@ def run(args):
 
     all_smells_files = list(filter(lambda filename: filename.endswith(".arff"), os.listdir('data')))
     all_smells = list(map(lambda filename: filename.split('.')[0].replace("-", "_"), all_smells_files))
-    print(all_models, all_smells)
     if len(args) == 0:
         print("Please specify a model. Enter <help> for usage menu")
         return

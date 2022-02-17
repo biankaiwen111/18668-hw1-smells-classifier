@@ -54,7 +54,7 @@ class SVCrbf:
         svc = SVC()
         print(f"Start grid searching for svc(rbf kernel) model with data set: {self.filename}...")
         k_fold = StratifiedKFold(n_splits=10)
-        grid_search = GridSearchCV(svc, param_grid, cv=k_fold, scoring="f1", return_train_score=True)
+        grid_search = GridSearchCV(svc, param_grid, cv=k_fold, scoring="accuracy", return_train_score=True)
 
         grid_search.fit(self.X_train, self.y_train)
         print(f"Finish training svc(rbf kernel) model with data set: {self.filename}\n")
